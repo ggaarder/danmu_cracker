@@ -1,5 +1,3 @@
-import zlib
-
 crc32_table_polyrev=[]
 poly_rev=0xedb88320
 ini5_table=[]
