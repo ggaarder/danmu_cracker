@@ -1,4 +1,3 @@
-import copy
 import zlib
 
 crc32_table_polyrev=[]
@@ -6,7 +5,7 @@ poly_rev=0xedb88320
 ini5_table=[]
 def main():
     for byte in range(256):
-        operator = copy.copy(byte)
+        operator = byte
         for bit in range(8):
             if (operator & 0x1) != 0:
                 operator >>= 1
@@ -33,15 +32,15 @@ def finder(num):
 
 def matcher(num,exceptions):
     for i in range(1000000):
-        if ((ini5_table[i]>>28)==(num>>28))&(((ini5_table[i]>>20)&0xf)==((num>>20)&0xf))&(((ini5_table[i]>>12)&0xf)==((num>>12)&0xf))&(((ini5_table[i]>>4)&0xf)==((num>>4)&0xf)):
+        if (ini5_table[i] & 0xf0f0f0f0) == (num & 0xf0f0f0f0):
             if ini5_table[i] not in exceptions:
                 return ini5_table[i],str(i)
 
 def crc_any(ini,l4_set):
-    var=copy.copy(ini)
+    var=ini
     num_set=[]
     for each in l4_set:
-        index=copy.copy(each)
+        index=each
         order=index^(var&0xff)
         if order>0x39 or order<0x30:
             return -1
@@ -55,7 +54,7 @@ def crackl4(line):
     ori=''.join(['0x',line])
     ori=int(ori,16)
     ori^=0xffffffff
-    var=copy.copy(ori)
+    var=ori
     last4=[0 for i in range(4)]
     for i in range(4):
         f2=var>>24
